@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DatingApp.API.WorkFlowModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace DatingApp.API.Models
@@ -24,5 +25,7 @@ namespace DatingApp.API.Models
         public virtual ICollection<Message> MessagesReceived { get; set; }
 
         public virtual ICollection<UserRole> UserRoles { get; set;}
+
+        public virtual ICollection<Request> Requests { get; set;}
     }
 }

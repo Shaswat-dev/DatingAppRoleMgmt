@@ -8,6 +8,7 @@ using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Helpers;
 using DatingApp.API.Models;
+using DatingApp.API.WorkFlowModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -44,6 +45,12 @@ namespace DatingApp.API
                 //x.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
                 x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+           /* services.AddDbContext<WorkFlowDataContext>(x => 
+            {
+                x.UseLazyLoadingProxies();
+                x.UseSqlServer(Configuration.GetConnectionString("NavaConnectionString"));
+            });*/
                 
             ConfigureServices(services);
         }
@@ -55,6 +62,13 @@ namespace DatingApp.API
                 x.UseLazyLoadingProxies();
                 x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+            
+
+           /* services.AddDbContext<WorkFlowDataContext>(x => 
+            {
+                x.UseLazyLoadingProxies();
+                x.UseSqlServer(Configuration.GetConnectionString("NavaConnectionString"));
+            });*/
 
             ConfigureServices(services);
         }

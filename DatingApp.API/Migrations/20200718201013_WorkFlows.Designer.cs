@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200717182139_IdentityIntial")]
-    partial class IdentityIntial
+    [Migration("20200718201013_WorkFlows")]
+    partial class WorkFlows
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -264,6 +264,221 @@ namespace DatingApp.API.Migrations
                     b.ToTable("Values");
                 });
 
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.Action", b =>
+                {
+                    b.Property<int>("ActionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ActionTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProcessId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActionId");
+
+                    b.HasIndex("ProcessId");
+
+                    b.ToTable("Actions");
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.ActionTarget", b =>
+                {
+                    b.Property<int>("ActionTargetId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ActionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TargetUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActionTargetId");
+
+                    b.HasIndex("ActionId");
+
+                    b.ToTable("ActionTargets");
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.Process", b =>
+                {
+                    b.Property<int>("ProcessId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ProcessName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProcessId");
+
+                    b.ToTable("Processs");
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.Request", b =>
+                {
+                    b.Property<int>("RequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CurrentStateId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateRequested")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProcessId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RequestId");
+
+                    b.HasIndex("CurrentStateId");
+
+                    b.HasIndex("ProcessId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Requests");
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.RequestAction", b =>
+                {
+                    b.Property<int>("RequestActionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ActionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransitionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RequestActionId");
+
+                    b.HasIndex("ActionId");
+
+                    b.HasIndex("RequestId");
+
+                    b.HasIndex("TransitionId");
+
+                    b.ToTable("RequestActions");
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.State", b =>
+                {
+                    b.Property<int>("StateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProcessId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StateTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StateId");
+
+                    b.HasIndex("ProcessId");
+
+                    b.HasIndex("StateTypeId");
+
+                    b.ToTable("States");
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.StateType", b =>
+                {
+                    b.Property<int>("StateTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StateTypeId");
+
+                    b.ToTable("StateTypes");
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.Transition", b =>
+                {
+                    b.Property<int>("TransitionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CurrentStateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NextStateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProcessId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TransitionId");
+
+                    b.HasIndex("CurrentStateId");
+
+                    b.HasIndex("NextStateId");
+
+                    b.HasIndex("ProcessId");
+
+                    b.ToTable("Transitions");
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.TransitionAction", b =>
+                {
+                    b.Property<int>("TransitionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ActionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TransitionId", "ActionId");
+
+                    b.HasIndex("ActionId");
+
+                    b.ToTable("TransitionActions");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -400,6 +615,117 @@ namespace DatingApp.API.Migrations
                     b.HasOne("DatingApp.API.Models.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.Action", b =>
+                {
+                    b.HasOne("DatingApp.API.WorkFlowModels.Process", "Process")
+                        .WithMany("Actions")
+                        .HasForeignKey("ProcessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.ActionTarget", b =>
+                {
+                    b.HasOne("DatingApp.API.WorkFlowModels.Action", "Action")
+                        .WithMany("ActionTargets")
+                        .HasForeignKey("ActionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.Request", b =>
+                {
+                    b.HasOne("DatingApp.API.WorkFlowModels.State", "CurrentState")
+                        .WithMany("Requests")
+                        .HasForeignKey("CurrentStateId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DatingApp.API.WorkFlowModels.Process", "Process")
+                        .WithMany("Requests")
+                        .HasForeignKey("ProcessId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DatingApp.API.Models.User", "User")
+                        .WithMany("Requests")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.RequestAction", b =>
+                {
+                    b.HasOne("DatingApp.API.WorkFlowModels.Action", "Action")
+                        .WithMany("RequestActions")
+                        .HasForeignKey("ActionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DatingApp.API.WorkFlowModels.Request", "Request")
+                        .WithMany("RequestActions")
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DatingApp.API.WorkFlowModels.Transition", "Transition")
+                        .WithMany("RequestActions")
+                        .HasForeignKey("TransitionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.State", b =>
+                {
+                    b.HasOne("DatingApp.API.WorkFlowModels.Process", "Process")
+                        .WithMany("States")
+                        .HasForeignKey("ProcessId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DatingApp.API.WorkFlowModels.StateType", "StateType")
+                        .WithMany("States")
+                        .HasForeignKey("StateTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.Transition", b =>
+                {
+                    b.HasOne("DatingApp.API.WorkFlowModels.State", "CurrentState")
+                        .WithMany("Transitionnexts")
+                        .HasForeignKey("CurrentStateId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DatingApp.API.WorkFlowModels.State", "NextState")
+                        .WithMany("Transitioncurrents")
+                        .HasForeignKey("NextStateId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DatingApp.API.WorkFlowModels.Process", "Process")
+                        .WithMany("Transitions")
+                        .HasForeignKey("ProcessId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatingApp.API.WorkFlowModels.TransitionAction", b =>
+                {
+                    b.HasOne("DatingApp.API.WorkFlowModels.Action", "Action")
+                        .WithMany("TransititionActions")
+                        .HasForeignKey("ActionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DatingApp.API.WorkFlowModels.Transition", "Transition")
+                        .WithMany("TransititionActions")
+                        .HasForeignKey("TransitionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

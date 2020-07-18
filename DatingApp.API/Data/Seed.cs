@@ -42,7 +42,7 @@ namespace DatingApp.API.Data
                     user.UserName = user.UserName.ToLower();
                     context.Users.Add(user);*/
                     userManager.CreateAsync(user,"password").Wait();
-                    userManager.AddToRoleAsync(user, "Member");
+                    userManager.AddToRoleAsync(user, "Member").Wait();
 
                 }
 
