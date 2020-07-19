@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DatingApp.API.Helpers;
 using DatingApp.API.Models;
+using DatingApp.API.WorkFlowModels;
 
 namespace DatingApp.API.Data
 {
@@ -18,5 +19,7 @@ namespace DatingApp.API.Data
         Task<Message> GetMessage(int id);
         Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams);
         Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId);
+
+        Task<List<State>> GetStartingState(int id);
     }
 }

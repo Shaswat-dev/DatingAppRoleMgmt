@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.API.Helpers;
 using DatingApp.API.Models;
+using DatingApp.API.WorkFlowModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.API.Data
@@ -50,7 +51,15 @@ namespace DatingApp.API.Data
 
             return user;
         }
+        
+        public async Task<List<State>> GetStartingState(int id)
+        {
+            var value = await _context.States
+            .FromSqlRaw("EXECUTE dbo.FindCurrentState {0}", id)
+            .ToListAsync();
 
+            return value;
+        }
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
             var users = _context.Users.OrderByDescending(u => u.LastActive).AsQueryable();

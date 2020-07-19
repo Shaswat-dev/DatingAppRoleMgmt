@@ -2,6 +2,7 @@ using System.Linq;
 using AutoMapper;
 using DatingApp.API.Dtos;
 using DatingApp.API.Models;
+using DatingApp.API.WorkFlowModels;
 
 namespace DatingApp.API.Helpers
 {
@@ -38,6 +39,7 @@ namespace DatingApp.API.Helpers
                     .MapFrom(u => u.Sender.Photos.FirstOrDefault(p => p.IsMain).Url))
                 .ForMember(m => m.RecipientPhotoUrl, opt => opt
                     .MapFrom(u => u.Recipient.Photos.FirstOrDefault(p => p.IsMain).Url));
+            CreateMap<State, StateIdLocatorDto>();
         }
     }
 }
